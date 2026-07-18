@@ -31,7 +31,10 @@ jobs:
           node-version: 22
           cache: npm
       # Trusted Publishing (OIDC) needs npm >= 11.5.1; the runner ships an older npm.
-      - run: npm install -g npm@latest
+      - name: Upgrade npm for OIDC trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version   # must be >= 11.5.1 in the log
       - run: npm ci
       - run: npm run build
       - run: npm test
