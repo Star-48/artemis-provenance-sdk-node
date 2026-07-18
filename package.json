@@ -1,0 +1,46 @@
+{
+  "name": "@provenance/sdk",
+  "version": "0.1.0",
+  "description": "Thin client for the Provenance data plane — mark and verify AI-generated media (EU AI Act Article 50(2)).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "prettier --check \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "provenance",
+    "c2pa",
+    "watermark",
+    "ai-act",
+    "content-credentials"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/REPLACE_ORG/provenance-sdk-node.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
