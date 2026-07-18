@@ -1,5 +1,5 @@
 {
-  "name": "@provenance/sdk",
+  "name": "@star48/artemis-provenance-sdk-node",
   "version": "0.1.0",
   "description": "Thin client for the Provenance data plane — mark and verify AI-generated media (EU AI Act Article 50(2)).",
   "license": "MIT",
@@ -17,8 +17,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "lint": "prettier --check \"src/**/*.ts\"",
-    "prepublishOnly": "npm run build"
+    "lint": "prettier --check \"src/**/*.ts\""
   },
   "keywords": [
     "provenance",
@@ -29,8 +28,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/REPLACE_ORG/provenance-sdk-node.git"
+    "url": "git+https://github.com/Star-48/artemis-provenance-sdk-node.git"
   },
+  "bugs": {
+    "url": "https://github.com/Star-48/artemis-provenance-sdk-node/issues"
+  },
+  "homepage": "https://github.com/Star-48/artemis-provenance-sdk-node#readme",
   "engines": {
     "node": ">=18"
   },
@@ -40,6 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "semantic-release": "^24.2.0",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
   }
