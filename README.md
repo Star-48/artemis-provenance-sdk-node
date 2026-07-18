@@ -1,4 +1,4 @@
-# @provenance/sdk
+# @star48/artemis-provenance-sdk-node
 
 Thin TypeScript/Node client for the **Provenance data plane** — mark and verify
 AI-generated media (image · video · audio) for EU AI Act Article 50(2)
@@ -6,13 +6,13 @@ compliance. The SDK contains **no marking logic**; it calls the data-plane
 container the customer runs in their own network, so content never leaves the VPC.
 
 ```bash
-npm install @provenance/sdk
+npm install @star48/artemis-provenance-sdk-node
 ```
 
 ## Usage
 
 ```ts
-import { Client, MarkingUnavailableError } from '@provenance/sdk';
+import { Client, MarkingUnavailableError } from '@star48/artemis-provenance-sdk-node';
 
 const pv = new Client({
   endpoint: 'http://provenance-dp.internal:8080',
