@@ -1,10 +1,12 @@
 name: Release
 # semantic-release + npm Trusted Publishing (OIDC — no NPM_TOKEN).
 # On push to main it reads the Conventional Commits since the last release,
-# computes the next version, updates package.json, then `npm publish` picks up
-# the OIDC trusted-publisher (tokenless, provenance automatic) and finally the
-# GitHub Release + tag are created. Merge a PR whose commits are `fix:` (patch),
-# `feat:` (minor) or contain `BREAKING CHANGE:` (major).
+# computes the next version, updates package.json, and @semantic-release/npm
+# publishes to npm. Publishing is tokenless: the job's OIDC identity is matched
+# against the trusted publisher configured on npm, and provenance attestations
+# are generated automatically. Finally the GitHub Release + tag are created.
+# Merge a PR whose commits are `fix:` (patch), `feat:` (minor) or contain
+# `BREAKING CHANGE:` (major).
 on:
   push:
     branches: [main]
@@ -30,17 +32,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      # Trusted Publishing (OIDC) needs npm >= 11.5.1; the runner ships an older npm.
-      - name: Upgrade npm for OIDC trusted publishing
-        run: |
-          npm install -g npm@latest
-          npm --version   # must be >= 11.5.1 in the log
       - run: npm ci
       - run: npm run build
       - run: npm test
-      # No NPM_TOKEN: @semantic-release/npm only bumps the version (npmPublish:false)
-      # and @semantic-release/exec runs `npm publish`, which authenticates via the
-      # OIDC trusted publisher configured on npm.
+      # No NPM_TOKEN. @semantic-release/npm (>=13) runs the npm CLI it bundles
+      # (>=11.6, OIDC-capable) which authenticates via the trusted publisher.
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
