@@ -1,0 +1,43 @@
+name: Release
+# semantic-release + npm Trusted Publishing (OIDC — no NPM_TOKEN).
+# On push to main it reads the Conventional Commits since the last release,
+# computes the next version, updates package.json, then `npm publish` picks up
+# the OIDC trusted-publisher (tokenless, provenance automatic) and finally the
+# GitHub Release + tag are created. Merge a PR whose commits are `fix:` (patch),
+# `feat:` (minor) or contain `BREAKING CHANGE:` (major).
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create the GitHub Release + tag
+  issues: write # semantic-release comments on released issues/PRs
+  pull-requests: write
+  id-token: write # npm Trusted Publishing (OIDC)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so semantic-release can read tags
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      # Trusted Publishing (OIDC) needs npm >= 11.5.1; the runner ships an older npm.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      # No NPM_TOKEN: @semantic-release/npm only bumps the version (npmPublish:false)
+      # and @semantic-release/exec runs `npm publish`, which authenticates via the
+      # OIDC trusted publisher configured on npm.
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
